@@ -11,7 +11,8 @@
       "Bash(node -e ' *)",
       "Bash(npx playwright *)",
       "Bash(mkdir -p \"c:/Users/oscar.contreras/Documents/demo/next-demo/.claude/skills/figma-ticket\")",
-      "Edit(/.claude/skills/figma-ticket/**)"
+      "Edit(/.claude/skills/figma-ticket/**)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
