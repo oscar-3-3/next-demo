@@ -1,11 +1,6 @@
-name: Build
+name: Build PR
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "my-app/**"
-      - ".github/workflows/build.yml"
   pull_request:
     branches: [main]
     paths:
@@ -17,7 +12,7 @@ defaults:
     working-directory: my-app
 
 jobs:
-  build:
+  build-pr:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -39,7 +34,7 @@ jobs:
       - name: Test
         run: npm test
 
-      - name: Build
+      - name: Build validation
         run: npm run build
         
       - name: Notify Slack on failure
