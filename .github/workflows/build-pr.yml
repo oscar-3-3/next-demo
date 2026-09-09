@@ -104,6 +104,4 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL_PR_COMMENTS }}
           webhook-type: incoming-webhook
           payload: |
-              {
-               "text": "*Claude reviewed PR #${{ github.event.pull_request.number }}* on `${{ github.repository }}`\n${{ fromJSON(steps.review.outputs.structured_output).summary }}\n<${{ github.event.pull_request.html_url }}|View PR>"
-              }
+              {"text": ${{ toJSON(format('*Claude reviewed PR #{0}* on `{1}` — {2} — <{3}|View PR>', github.event.pull_request.number, github.repository, fromJSON(steps.review.outputs.structured_output).summary, github.event.pull_request.html_url)) }}}
