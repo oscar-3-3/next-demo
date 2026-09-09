@@ -6,7 +6,7 @@ describe("Home page", () => {
   it("renders a Login link to the login page", () => {
     render(<Home />);
 
-    expect(screen.getByRole("link", { name: "Login" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Sign in" })).toHaveAttribute(
       "href",
       "/login",
     );
