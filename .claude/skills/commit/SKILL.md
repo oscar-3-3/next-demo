@@ -21,17 +21,20 @@ Follow these steps in order:
 
 4. **Stage specific files by name** - never `git add -A` or `git add .`. List the files explicitly so nothing unintended (stray build output, an editor temp file, an untracked secret) gets swept in. Run this as its own Bash call - do not chain it with `&&` to the commit or status commands below.
 
-5. **Create the commit** with the message passed via a heredoc so multi-line text and quoting are preserved correctly. Run this as its own Bash call too, not chained with `&&` to step 4 or 6:
-   ```
-   git commit -m "$(cat <<'EOF'
-   <message>
+5. **Create the commit** with the message written to a file first, then passed via `-F` so multi-line text and quoting are preserved correctly without any shell command substitution:
+   - Use the Write tool (not Bash) to write the message to `.git/COMMIT_EDITMSG_CLAUDE`:
+     ```
+     <message>
 
-   Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
-   EOF
-   )"
-   ```
+     Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
+     ```
+   - Then, as its own Bash call, not chained with `&&` to step 4 or 6:
+     ```
+     git commit -F .git/COMMIT_EDITMSG_CLAUDE
+     ```
+     (No cleanup needed - `.git/` isn't part of the working tree, so this file never shows up in `git status` or gets committed.)
 
-   Steps 4-6 must each be a separate Bash tool call, never joined with `&&` into one command. The project's permission allowlist has per-command rules like `Bash(git add:*)` and `Bash(git commit:*)` that match a clean, standalone invocation of each command - but a compound command (`git add ... && git commit -m "$(cat <<'EOF' ...)" && git status`) can't be verified cleanly against those rules once it includes the heredoc/command-substitution, so it prompts for confirmation even though every individual command is already allowed. Splitting the calls keeps the existing allowlist effective and avoids the redundant prompt.
+   Steps 4-6 must each be a separate Bash tool call, never joined with `&&` into one command, and step 5 must never use `-m "$(cat <<'EOF' ...)"` or any other command substitution / heredoc / backticks. The project's permission allowlist has per-command rules like `Bash(git add:*)` and `Bash(git commit:*)` that match a clean, standalone invocation of each command - but any Bash command containing `$(...)`, backticks, or a heredoc requires manual confirmation regardless of the allowlist, since Claude Code can't statically verify that dynamic/substituted content is safe (this is a deliberate guard against injected commands, not a bug). Writing the message to a file with the Write tool and passing it via plain `-F <path>` avoids that shell substitution entirely, so the allowlist rule applies cleanly and step 5 doesn't prompt.
 
 6. **Verify.** Run `git status` after the commit to confirm it succeeded and the tree is clean (or shows only what was intentionally left uncommitted).
 
