@@ -19,9 +19,9 @@ Follow these steps in order:
 
 3. **Draft the commit message.** Look at all changes that will be committed (previously staged + newly relevant untracked/modified files) and write 1-2 sentences focused on *why* the change was made, not a mechanical list of files. Match the tone of `git log -5` (this repo's recent commits read like "feat: ...", "fix: ..." - follow that convention when it fits). If the user gave a hint in $ARGUMENTS, incorporate it instead of guessing.
 
-4. **Stage specific files by name** - never `git add -A` or `git add .`. List the files explicitly so nothing unintended (stray build output, an editor temp file, an untracked secret) gets swept in.
+4. **Stage specific files by name** - never `git add -A` or `git add .`. List the files explicitly so nothing unintended (stray build output, an editor temp file, an untracked secret) gets swept in. Run this as its own Bash call - do not chain it with `&&` to the commit or status commands below.
 
-5. **Create the commit** with the message passed via a heredoc so multi-line text and quoting are preserved correctly:
+5. **Create the commit** with the message passed via a heredoc so multi-line text and quoting are preserved correctly. Run this as its own Bash call too, not chained with `&&` to step 4 or 6:
    ```
    git commit -m "$(cat <<'EOF'
    <message>
@@ -30,6 +30,8 @@ Follow these steps in order:
    EOF
    )"
    ```
+
+   Steps 4-6 must each be a separate Bash tool call, never joined with `&&` into one command. The project's permission allowlist has per-command rules like `Bash(git add:*)` and `Bash(git commit:*)` that match a clean, standalone invocation of each command - but a compound command (`git add ... && git commit -m "$(cat <<'EOF' ...)" && git status`) can't be verified cleanly against those rules once it includes the heredoc/command-substitution, so it prompts for confirmation even though every individual command is already allowed. Splitting the calls keeps the existing allowlist effective and avoids the redundant prompt.
 
 6. **Verify.** Run `git status` after the commit to confirm it succeeded and the tree is clean (or shows only what was intentionally left uncommitted).
 
