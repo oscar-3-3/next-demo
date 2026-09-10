@@ -1,5 +1,3 @@
-"use client";
-
 function UserIcon() {
   return (
     <svg
@@ -82,56 +80,62 @@ export default function Login() {
         <div className="pointer-events-none absolute -left-16 -top-16 h-72 w-72 rounded-full border border-white/10" />
         <div className="pointer-events-none absolute -bottom-40 -left-40 h-96 w-96 rounded-full border border-white/10" />
         <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full border border-white/10" />
-        <h1 className="z-10 text-3xl font-bold tracking-wide text-white">
+        <p className="z-10 text-3xl font-bold tracking-wide text-white">
           STAX FOOD
-        </h1>
+        </p>
       </div>
 
       <div className="flex w-full items-center justify-center bg-white px-8 py-16 md:w-1/2">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          className="w-full max-w-sm"
-        >
-          <h2 className="text-3xl font-bold text-black">Hello!</h2>
+        <form className="w-full max-w-sm">
+          <h1 className="text-3xl font-bold text-black">Hello!</h1>
           <p className="mt-2 text-sm text-zinc-500">
             Sign Up to Get Started
           </p>
 
           <div className="mt-8 flex flex-col gap-4">
-            <label className="flex items-center gap-3 rounded-lg bg-zinc-100 px-4 py-3">
+            <label className="flex items-center gap-3 rounded-lg bg-zinc-100 px-4 py-3 focus-within:ring-2 focus-within:ring-black/40">
+              <span className="sr-only">Full Name</span>
               <UserIcon />
               <input
                 type="text"
                 name="fullName"
                 placeholder="Full Name"
+                autoComplete="name"
+                required
                 className="w-full bg-transparent text-sm text-black placeholder-zinc-400 outline-none"
               />
             </label>
 
-            <label className="flex items-center gap-3 rounded-lg bg-zinc-100 px-4 py-3">
+            <label className="flex items-center gap-3 rounded-lg bg-zinc-100 px-4 py-3 focus-within:ring-2 focus-within:ring-black/40">
+              <span className="sr-only">Email Address</span>
               <MailIcon />
               <input
                 type="email"
                 name="email"
                 placeholder="Email Address"
+                autoComplete="email"
+                required
                 className="w-full bg-transparent text-sm text-black placeholder-zinc-400 outline-none"
               />
             </label>
 
-            <label className="flex items-center gap-3 rounded-lg bg-zinc-100 px-4 py-3">
+            <label className="flex items-center gap-3 rounded-lg bg-zinc-100 px-4 py-3 focus-within:ring-2 focus-within:ring-black/40">
+              <span className="sr-only">Password</span>
               <LockIcon />
               <input
                 type="password"
                 name="password"
                 placeholder="Password"
+                autoComplete="new-password"
+                required
                 className="w-full bg-transparent text-sm text-black placeholder-zinc-400 outline-none"
               />
             </label>
           </div>
 
           <button
-            type="submit"
-            className="mt-6 w-full rounded-lg bg-black py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
+            type="button"
+            className="mt-6 w-full rounded-lg bg-black py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-800 focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
           >
             Register
           </button>
