@@ -80,6 +80,11 @@ jobs:
             - Performance considerations (unnecessary re-renders, bundle size, server/client boundaries)
             - TypeScript type safety
 
+            Severity filter - this is a demo/prototype project, not a production app:
+            - Only flag something if it would cause incorrect behavior, a real security vulnerability, or a clear bug.
+            - Do not flag minor accessibility edge cases (e.g. forced-colors/high-contrast mode specifics, WCAG nice-to-haves), stylistic preferences, defensive-programming suggestions, or hypothetical edge cases unlikely to matter for this app's actual usage.
+            - If you're unsure whether something is a real bug versus a nitpick, skip it.
+
             Note: The PR branch is already checked out in the current working directory.
 
             IMPORTANT - avoid duplicate feedback:
