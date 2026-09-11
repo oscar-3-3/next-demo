@@ -41,7 +41,7 @@ export default function FeedbackSection() {
       <ul style={styles.list}>
         {comments.map((comment, index) => (
           <li key={index} style={styles.item}>
-            <div dangerouslySetInnerHTML={{ __html: comment.text }} />
+            <div>{comment.text}</div>
             <button
               style={styles.removeButton}
               onClick={() => handleRemoveComment(index)}
