@@ -2,8 +2,12 @@
 
 import { useState, type CSSProperties } from "react";
 
+interface Comment {
+  text: string;
+}
+
 export default function FeedbackSection() {
-  const [comments, setComments] = useState<any[]>([
+  const [comments, setComments] = useState<Comment[]>([
     { text: "Great proposal, I love the design!" },
     { text: "I think step 2 needs more detail." },
   ]);
