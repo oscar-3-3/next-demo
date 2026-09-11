@@ -3,7 +3,7 @@
 import { useState, type CSSProperties } from "react";
 
 export default function FeedbackSection() {
-  const [comments, setComments] = useState([
+  const [comments, setComments] = useState<any[]>([
     { text: "Great proposal, I love the design!" },
     { text: "I think step 2 needs more detail." },
   ]);
@@ -13,6 +13,9 @@ export default function FeedbackSection() {
 
     setComments([...comments, { text: input }]);
     setInput("");
+  };
+  const handleRemoveComment = (index: number) => {
+    setComments(comments.filter((_, i) => i !== index));
   };
 
   return (
@@ -35,6 +38,12 @@ export default function FeedbackSection() {
         {comments.map((comment, index) => (
           <li key={index} style={styles.item}>
             <div dangerouslySetInnerHTML={{ __html: comment.text }} />
+            <button
+              style={styles.removeButton}
+              onClick={() => handleRemoveComment(index)}
+            >
+              Remove
+            </button>
           </li>
         ))}
       </ul>
@@ -89,5 +98,14 @@ const styles: Record<string, CSSProperties> = {
     padding: 10,
     borderRadius: 6,
     background: "#b1bd08",
+  },
+  removeButton: {
+    marginTop: 8,
+    padding: "4px 10px",
+    borderRadius: 6,
+    border: "none",
+    background: "#dc2626",
+    color: "#fff",
+    cursor: "pointer",
   },
 };
