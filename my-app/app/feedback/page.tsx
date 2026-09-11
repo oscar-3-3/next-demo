@@ -3,23 +3,24 @@
 import { useState } from "react";
 
 interface Comment {
+  id: string;
   text: string;
 }
 
 export default function FeedbackSection() {
   const [comments, setComments] = useState<Comment[]>([
-    { text: "Great proposal, I love the design!" },
-    { text: "I think step 2 needs more detail." },
+    { id: crypto.randomUUID(), text: "Great proposal, I love the design!" },
+    { id: crypto.randomUUID(), text: "I think step 2 needs more detail." },
   ]);
   const [input, setInput] = useState("");
   const handleAddComment = () => {
     if (input.trim() === "") return;
 
-    setComments([...comments, { text: input }]);
+    setComments([...comments, { id: crypto.randomUUID(), text: input }]);
     setInput("");
   };
-  const handleRemoveComment = (index: number) => {
-    setComments(comments.filter((_, i) => i !== index));
+  const handleRemoveComment = (id: string) => {
+    setComments((prev) => prev.filter((c) => c.id !== id));
   };
 
   return (
@@ -42,12 +43,12 @@ export default function FeedbackSection() {
       </div>
 
       <ul className="list-none p-0 flex flex-col gap-2.5">
-        {[...comments].reverse().map((comment, index) => (
-          <li key={index} className="p-2.5 rounded-md bg-[#b1bd08]">
-            <div dangerouslySetInnerHTML={{ __html: comment.text }} />
+        {[...comments].reverse().map((comment) => (
+          <li key={comment.id} className="p-2.5 rounded-md bg-[#b1bd08]">
+            <div className="whitespace-pre-wrap">{comment.text}</div>
             <button
               className="mt-2 px-2.5 py-1 rounded-md border-none bg-red-600 text-white cursor-pointer"
-              onClick={() => handleRemoveComment(index)}
+              onClick={() => handleRemoveComment(comment.id)}
             >
               Remove
             </button>
