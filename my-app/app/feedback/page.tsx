@@ -15,7 +15,7 @@ export default function FeedbackSection() {
   const handleAddComment = () => {
     if (input.trim() === "") return;
 
-    setComments([...comments, { text: input }]);
+    setComments([...comments, { text: input.trim() }]);
     setInput("");
   };
   const handleRemoveComment = (index: number) => {
@@ -41,7 +41,7 @@ export default function FeedbackSection() {
       <ul style={styles.list}>
         {comments.map((comment, index) => (
           <li key={index} style={styles.item}>
-            <div>{comment.text}</div>
+            <div style={{ whiteSpace: "pre-wrap" }}>{comment.text}</div>
             <button
               style={styles.removeButton}
               onClick={() => handleRemoveComment(index)}
@@ -55,7 +55,7 @@ export default function FeedbackSection() {
   );
 }
 
-const styles: Record<string, CSSProperties> = {
+const styles = {
   wrapper: {
     maxWidth: 480,
     margin: "40px auto",
@@ -102,6 +102,7 @@ const styles: Record<string, CSSProperties> = {
     padding: 10,
     borderRadius: 6,
     background: "#b1bd08",
+    color: "#171717",
   },
   removeButton: {
     marginTop: 8,
@@ -112,4 +113,4 @@ const styles: Record<string, CSSProperties> = {
     color: "#fff",
     cursor: "pointer",
   },
-};
+} satisfies Record<string, CSSProperties>;
